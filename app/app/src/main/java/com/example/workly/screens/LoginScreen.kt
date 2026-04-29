@@ -10,11 +10,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 
 @Composable
@@ -24,92 +25,85 @@ fun LoginScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Workly",
+                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold)
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = "Conecte-se de forma simples e rapida!",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(28.dp))
 
-        Text(
-            text = "Workly",
-            style = MaterialTheme.typography.headlineLarge,
-        )
+            Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text("Email") },
+                    placeholder = { Text("nome@exemplo.com") },
+                    leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        Text(
-            text = "Faça login com sua conta",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Senha") },
+                    placeholder = { Text("Digite sua senha") },
+                    leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
+                    singleLine = true,
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            placeholder = { Text("seu@email.com") },
-            leadingIcon = { Icon(Icons.Default.Email, null) },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Senha") },
-            placeholder = { Text("Digite sua senha") },
-            leadingIcon = { Icon(Icons.Default.Lock, null) },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation =
-                if (passwordVisible) VisualTransformation.None
-                else PasswordVisualTransformation(),
-            trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
-
-                val description = if (passwordVisible)
-                    "Ocultar senha"
-                else "Mostrar senha"
-
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(image, description)
+                Button(
+                    onClick = {
+                        if (email.contains("client", ignoreCase = true)) {
+                            navController.navigate("client_home")
+                        } else {
+                            navController.navigate("provider_home")
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp)
+                ) {
+                    Text("Entrar")
                 }
             }
-        )
 
-        Button(
-            onClick = {
-                if (email.contains("client")) {
-                    navController.navigate("client_home")
-                } else {
-                    navController.navigate("provider_home")
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(52.dp)
-        ) {
-            Text("Entrar")
-        }
+            Spacer(modifier = Modifier.height(18.dp))
 
-        TextButton(
-            onClick = {
-                navController.navigate("signup")
-            },
-            modifier = Modifier.widthIn(min = 120.dp)
-        ) {
-            Text("Não tem conta? Cadastre-se")
+            TextButton(onClick = { navController.navigate("signup") }) {
+                Text("Criar uma conta nova")
+            }
         }
     }
 }
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 800)
 @Composable
 fun LoginScreenPreview() {
     val navController = rememberNavController()
-    MaterialTheme {
-        LoginScreen(navController = navController)
-    }
+    LoginScreen(navController = navController)
 }

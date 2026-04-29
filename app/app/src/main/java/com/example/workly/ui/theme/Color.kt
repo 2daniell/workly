@@ -2,10 +2,12 @@ package com.example.workly.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val WorklyBlue = Color(0xFF1565C0)
+val WorklyCyan = Color(0xFF00ACC1)
+val WorklyMint = Color(0xFF80CBC4)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val WorklySand = Color(0xFFFFF3E0)
+val WorklySurface = Color(0xFFFFFFFF)
+val WorklyBackground = Color(0xFFF3F7FB)
+val WorklyOnSurface = Color(0xFF1B2A37)
+val WorklyError = Color(0xFFB00020)

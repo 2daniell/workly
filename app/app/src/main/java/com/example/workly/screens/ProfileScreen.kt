@@ -20,22 +20,18 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun ProfileScreen(navController: NavController) {
 
-    val userName by remember { mutableStateOf("João") }
-    val userEmail by remember { mutableStateOf("joao@email.com") }
-
+    var userName by remember { mutableStateOf("João") }
+    var userEmail by remember { mutableStateOf("joao@email.com") }
     var profession by remember { mutableStateOf("Eletricista") }
     var professionalDescription by remember { mutableStateOf("Profissional qualificado em instalações elétricas residenciais.") }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Meu Perfil") },
+                title = { Text("Meu perfil") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = "Voltar"
-                        )
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
                     }
                 }
             )
@@ -46,122 +42,87 @@ fun ProfileScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.large,
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 10.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Icon(
                         Icons.Default.AccountCircle,
-                        contentDescription = "Perfil",
-                        modifier = Modifier.size(64.dp),
+                        contentDescription = null,
+                        modifier = Modifier.size(72.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
+                    Text("Olá, $userName", style = MaterialTheme.typography.headlineSmall)
                     Text(
-                        text = "Bem‑vindo, $userName",
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = userEmail,
-                        style = MaterialTheme.typography.bodyMedium,
+                        userEmail,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
                     )
                 }
             }
 
-            Text(
-                "Dados do Perfil",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-
             OutlinedTextField(
                 value = userName,
-                onValueChange = {  },
+                onValueChange = { userName = it },
                 label = { Text("Nome") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                singleLine = true
+                modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = userEmail,
-                onValueChange = { },
+                onValueChange = { userEmail = it },
                 label = { Text("Email") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                singleLine = true
+                modifier = Modifier.fillMaxWidth()
             )
-
-            Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
                 value = profession,
                 onValueChange = { profession = it },
                 label = { Text("Profissão") },
-                placeholder = { Text("Ex: Encanador, eletricista, pintor") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                singleLine = true
+                modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = professionalDescription,
                 onValueChange = { professionalDescription = it },
                 label = { Text("Descrição profissional") },
-                placeholder = { Text("Conte sobre suas experiências, áreas de atuação e qualificações.") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp),
+                    .height(140.dp),
                 maxLines = 5
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
-
             Button(
-                onClick = {  },
+                onClick = { /* Salvar alterações */ },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp)
+                    .height(50.dp)
             ) {
                 Text("Salvar alterações")
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
             OutlinedButton(
                 onClick = {
                     navController.navigate("login") {
-                        popUpTo(0)
+                        popUpTo("login") { inclusive = true }
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp)
+                    .height(50.dp)
             ) {
                 Text("Sair da conta")
             }
@@ -169,11 +130,9 @@ fun ProfileScreen(navController: NavController) {
     }
 }
 
-@Preview(showBackground = true, heightDp = 800)
+@Preview(showBackground = true, heightDp = 900)
 @Composable
 fun ProfileScreenPreview() {
     val navController = rememberNavController()
-    MaterialTheme {
-        ProfileScreen(navController = navController)
-    }
+    ProfileScreen(navController = navController)
 }
